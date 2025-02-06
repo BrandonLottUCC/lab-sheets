@@ -69,7 +69,7 @@ function QualityControlForm() {
   const [criticalElementsList, setCriticalElementsList] = useState([
     {
       element: "",
-      readings: ["", "", "", ""],
+      averagePpm: "",
       note: "",
     },
   ]);
@@ -94,7 +94,7 @@ function QualityControlForm() {
         const newList = [...criticalElementsList];
         newList[index] = {
           element: "",
-          readings: ["", "", "", ""],
+          averagePpm: "",
           note: "",
         };
         setCriticalElementsList(newList);
@@ -119,7 +119,7 @@ function QualityControlForm() {
       ...criticalElementsList,
       {
         element: "",
-        readings: ["", "", "", ""],
+        averagePpm: "",
         note: "",
       },
     ]);
@@ -130,7 +130,7 @@ function QualityControlForm() {
     setCriticalElementsList([
       {
         element: "",
-        readings: ["", "", "", ""],
+        averagePpm: "",
         note: "",
       },
     ]);
@@ -206,7 +206,7 @@ function QualityControlForm() {
                       className="mr-1 appearance-none w-4 h-4 bg-white border border-black checked:bg-black checked:border-black relative
                       before:content-['✓'] before:absolute before:text-white before:text-xs before:top-0 before:left-0.5 before:opacity-0 checked:before:opacity-100"
                     />
-                    <span className="ml-2">Ceramic</span>
+                    <span className="ml-0">Ceramic</span>
                   </label>
                   <label className="inline-flex items-center text-black">
                     <input
@@ -214,7 +214,7 @@ function QualityControlForm() {
                       className="mr-1 appearance-none w-4 h-4 bg-white border border-black checked:bg-black checked:border-black relative
                       before:content-['✓'] before:absolute before:text-white before:text-xs before:top-0 before:left-0.5 before:opacity-0 checked:before:opacity-100"
                     />
-                    <span className="ml-2">DPF</span>
+                    <span className="ml-0">DPF</span>
                   </label>
                   <label className="inline-flex items-center text-black">
                     <input
@@ -222,7 +222,7 @@ function QualityControlForm() {
                       className="mr-1 appearance-none w-4 h-4 bg-white border border-black checked:bg-black checked:border-black relative
                       before:content-['✓'] before:absolute before:text-white before:text-xs before:top-0 before:left-0.5 before:opacity-0 checked:before:opacity-100"
                     />
-                    <span className="ml-2">Foil</span>
+                    <span className="ml-0">Foil</span>
                   </label>
                   <label className="inline-flex items-center text-black">
                     <input
@@ -230,7 +230,7 @@ function QualityControlForm() {
                       className="mr-1 appearance-none w-4 h-4 bg-white border border-black checked:bg-black checked:border-black relative
                       before:content-['✓'] before:absolute before:text-white before:text-xs before:top-0 before:left-0.5 before:opacity-0 checked:before:opacity-100"
                     />
-                    <span className="ml-2">AFT</span>
+                    <span className="ml-0">AFT</span>
                   </label>
                   <label className="inline-flex items-center text-black">
                     <input
@@ -239,7 +239,7 @@ function QualityControlForm() {
                       className="mr-1 appearance-none w-4 h-4 bg-white border border-black checked:bg-black checked:border-black relative
                       before:content-['✓'] before:absolute before:text-white before:text-xs before:top-0 before:left-0.5 before:opacity-0 checked:before:opacity-100"
                     />
-                    <span className="ml-2">Other</span>
+                    <span className="ml-0">Other</span>
                   </label>
                 </div>
               )}
@@ -252,7 +252,7 @@ function QualityControlForm() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-bold mb-2 text-black">
-                  Gross Wet Weight:
+                  Gross Wet Weight (grams):
                 </label>
                 <input
                   type="text"
@@ -262,7 +262,7 @@ function QualityControlForm() {
               </div>
               <div>
                 <label className="block text-sm font-bold mb-2 text-black">
-                  Gross Dry Weight:
+                  Gross Dry Weight (grams):
                 </label>
                 <input
                   type="text"
@@ -288,7 +288,7 @@ function QualityControlForm() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-bold mb-2 text-black">
-                  Tare:
+                  Tare (grams):
                 </label>
                 <input
                   type="text"
@@ -298,7 +298,7 @@ function QualityControlForm() {
               </div>
               <div>
                 <label className="block text-sm font-bold mb-2 text-black">
-                  Dry Net Weight:
+                  Dry Net Weight (grams):
                 </label>
                 <input
                   type="text"
@@ -363,7 +363,7 @@ function QualityControlForm() {
                 </div>
                 <div>
                   <label className="block text-sm font-bold mb-2 text-black">
-                    Supplier Net Weight:
+                    Supplier Net Weight (lbs):
                   </label>
                   <input
                     type="text"
@@ -595,20 +595,14 @@ function QualityControlForm() {
                       <th className="border border-black p-2 text-black w-1/4">
                         Critical element found
                       </th>
-                      <th className="border border-black p-2 text-black w-[10%]">
-                        1
+                      <th className="border border-black p-2 text-black">
+                        Influence
                       </th>
-                      <th className="border border-black p-2 text-black w-[10%]">
-                        2
-                      </th>
-                      <th className="border border-black p-2 text-black w-[10%]">
-                        3
-                      </th>
-                      <th className="border border-black p-2 text-black w-[10%]">
-                        4
+                      <th className="border border-black p-2 text-black w-[15%]">
+                        Average PPM
                       </th>
                       <th className="border border-black p-2 text-black">
-                        Note on critical element
+                        Note
                       </th>
                     </tr>
                   </thead>
@@ -635,24 +629,27 @@ function QualityControlForm() {
                             ))}
                           </select>
                         </td>
-                        {elementData.readings.map((reading, colIndex) => (
-                          <td
-                            key={colIndex}
-                            className="border border-black p-2"
-                          >
-                            <input
-                              type="text"
-                              value={reading}
-                              onChange={(e) => {
-                                const newList = [...criticalElementsList];
-                                newList[rowIndex].readings[colIndex] =
-                                  e.target.value;
-                                setCriticalElementsList(newList);
-                              }}
-                              className="w-full text-black bg-white focus:outline-none"
-                            />
-                          </td>
-                        ))}
+                        <td className="border border-black p-2 text-black">
+                          {elementData.element &&
+                            CRITICAL_ELEMENTS.find(
+                              (elem) => elem.element === elementData.element
+                            )?.influence}
+                        </td>
+                        <td className="border border-black p-2">
+                          <input
+                            type="text"
+                            value={elementData.averagePpm || ""}
+                            onChange={(e) => {
+                              const newList = [...criticalElementsList];
+                              newList[rowIndex] = {
+                                ...newList[rowIndex],
+                                averagePpm: e.target.value,
+                              };
+                              setCriticalElementsList(newList);
+                            }}
+                            className="w-full text-black bg-white focus:outline-none"
+                          />
+                        </td>
                         <td className="border border-black p-2">
                           <textarea
                             value={elementData.note}
@@ -696,7 +693,7 @@ function QualityControlForm() {
                       setCriticalElementsList([
                         {
                           element: "",
-                          readings: ["", "", "", ""],
+                          averagePpm: "",
                           note: "",
                         },
                       ]);
@@ -715,7 +712,7 @@ function QualityControlForm() {
                       setCriticalElementsList([
                         {
                           element: "",
-                          readings: ["", "", "", ""],
+                          averagePpm: "",
                           note: "",
                         },
                       ]);
@@ -737,9 +734,6 @@ function QualityControlForm() {
                   <th className="border border-black p-2 text-black">
                     Supplier
                   </th>
-                  <th className="border border-black p-2 text-black">
-                    Sample ID
-                  </th>
                   <th className="border border-black p-2 text-black">Gross</th>
                   <th className="border border-black p-2 text-black">Tare</th>
                   <th className="border border-black p-2 text-black">Net</th>
@@ -750,12 +744,6 @@ function QualityControlForm() {
                   <tr key={index}>
                     <td className="border border-black p-2 text-black">
                       {supplier}
-                    </td>
-                    <td className="border border-black p-2">
-                      <input
-                        type="text"
-                        className="w-full text-black bg-white"
-                      />
                     </td>
                     <td className="border border-black p-2">
                       <input

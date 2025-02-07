@@ -1,4 +1,6 @@
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 // Add this constant at the top of the file, before the component
 const CRITICAL_ELEMENTS = [
@@ -74,6 +76,10 @@ function QualityControlForm() {
     },
   ]);
   const [showInfoDialog, setShowInfoDialog] = useState(false);
+  const [dateIn, setDateIn] = useState(null);
+  const [dateOut, setDateOut] = useState(null);
+  const [timeIn, setTimeIn] = useState({ time: "", period: "AM" });
+  const [timeOut, setTimeOut] = useState({ time: "", period: "AM" });
 
   const handleClear = () => {
     setIsOtherSelected(false);
@@ -136,6 +142,20 @@ function QualityControlForm() {
     ]);
   };
 
+  const handleTimeInput = (value, type) => {
+    // Only allow numbers and colon
+    const cleaned = value.replace(/[^\d:]/g, "");
+
+    // Format as HH:MM
+    if (cleaned.length <= 5) {
+      if (type === "in") {
+        setTimeIn((prev) => ({ ...prev, time: cleaned }));
+      } else {
+        setTimeOut((prev) => ({ ...prev, time: cleaned }));
+      }
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6">
       {/* Header */}
@@ -164,6 +184,7 @@ function QualityControlForm() {
                 <input
                   type="text"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                  placeholder="Enter short code"
                 />
               </div>
               <div className="col-span-1">
@@ -173,6 +194,7 @@ function QualityControlForm() {
                 <input
                   type="text"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                  placeholder="lot #"
                 />
               </div>
             </div>
@@ -257,38 +279,50 @@ function QualityControlForm() {
                 <input
                   type="text"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
-                  placeholder="Enter weight"
+                  placeholder="Enter gross weight"
                 />
               </div>
               <div>
                 <label className="block text-sm font-bold mb-2 text-black">
-                  Gross Dry Weight (grams):
+                  Tare (grams):
                 </label>
                 <input
                   type="text"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
-                  placeholder="Enter weight"
+                  placeholder="Enter tare weight"
                 />
               </div>
             </div>
 
             {/* Moisture Content section */}
-            <div>
-              <label className="block text-sm font-bold mb-2 text-black">
-                Moisture Content:
-              </label>
-              <input
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
-                placeholder="Enter moisture content"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-bold mb-2 text-black">
+                  Tare:
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                  placeholder="Enter tare"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold mb-2 text-black">
+                  Net Weight (grams):
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                  placeholder="Enter net weight"
+                />
+              </div>
             </div>
 
             {/* New Tare and Dry Net Weight row */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-bold mb-2 text-black">
-                  Tare (grams):
+                  Net Weight (grams):
                 </label>
                 <input
                   type="text"
@@ -316,37 +350,76 @@ function QualityControlForm() {
                 <label className="block text-sm font-bold mb-2 text-black">
                   Date In:
                 </label>
-                <input
-                  type="text"
+                <DatePicker
+                  selected={dateIn}
+                  onChange={(date) => setDateIn(date)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                  placeholderText="Select date"
                 />
               </div>
               <div>
                 <label className="block text-sm font-bold mb-2 text-black">
                   Date Out:
                 </label>
-                <input
-                  type="text"
+                <DatePicker
+                  selected={dateOut}
+                  onChange={(date) => setDateOut(date)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                  placeholderText="Select date"
                 />
               </div>
               <div>
                 <label className="block text-sm font-bold mb-2 text-black">
                   Time In:
                 </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={timeIn.time}
+                    onChange={(e) => handleTimeInput(e.target.value, "in")}
+                    placeholder="HH:MM"
+                    className="w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                    maxLength={5}
+                  />
+                  <select
+                    value={timeIn.period}
+                    onChange={(e) =>
+                      setTimeIn((prev) => ({ ...prev, period: e.target.value }))
+                    }
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                  >
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-bold mb-2 text-black">
                   Time Out:
                 </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={timeOut.time}
+                    onChange={(e) => handleTimeInput(e.target.value, "out")}
+                    placeholder="HH:MM"
+                    className="w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                    maxLength={5}
+                  />
+                  <select
+                    value={timeOut.period}
+                    onChange={(e) =>
+                      setTimeOut((prev) => ({
+                        ...prev,
+                        period: e.target.value,
+                      }))
+                    }
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                  >
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -359,6 +432,7 @@ function QualityControlForm() {
                   <input
                     type="text"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+                    placeholder="Control Number"
                   />
                 </div>
                 <div>

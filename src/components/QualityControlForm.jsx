@@ -1,53 +1,53 @@
-import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useState } from "react";
 
 // Add this constant at the top of the file, before the component
 const CRITICAL_ELEMENTS = [
   {
-    element: "Selenium (Se)",
-    influence: "Increases Platinum",
+    element: "(Se) Selinium",
+    influence: "May increase Platinum",
     comment: "Even the slightest traces of Se have an influence on platinum.",
   },
   {
     element: "Tungsten (W)",
-    influence: "Increases Platinum",
+    influence: "May increase Platinum",
     comment: "650ppm",
   },
   {
     element: "Lead (Pb)",
-    influence: "Increases Platinum",
+    influence: "May increase Platinum",
     comment: "1500ppm",
   },
   {
     element: "Zircon (Zr)",
-    influence: "Increases Platinum and Palladium",
+    influence: "May increase Platinum and Palladium",
     comment: "650ppm",
   },
   {
     element: "Titanium (Ti)",
-    influence: "Increases Platinum",
+    influence: "May increase Platinum",
     comment:
       "Only in Combination with Tungsten (W) a problem Tungsten (w) = 650ppm  Titanium (Ti) = 2600ppm",
   },
   {
     element: "Cerium (Ce)",
-    influence: "Increases Platinum and Palladium",
+    influence: "May increase Platinum and Palladium",
     comment: "75000ppm",
   },
   {
     element: "Vanadium (V)",
-    influence: "Increases Platinum",
+    influence: "May increase Platinum",
     comment: "Rare, Mostly appears in combination with tungsten (W)",
   },
   {
     element: "Germanium (Ge)",
-    influence: "Increases Platinum",
+    influence: "May increase Platinum",
     comment: "It's very rare",
   },
   {
     element: "Hafnium (Hf)",
-    influence: "Increases Platinum",
+    influence: "May increase Platinum",
     comment: "It's very rare",
   },
 ];
@@ -80,6 +80,7 @@ function QualityControlForm() {
   const [dateOut, setDateOut] = useState(null);
   const [timeIn, setTimeIn] = useState({ time: "", period: "AM" });
   const [timeOut, setTimeOut] = useState({ time: "", period: "AM" });
+  const [ovenUsed, setOvenUsed] = useState(null);
 
   const handleClear = () => {
     setIsOtherSelected(false);
@@ -171,34 +172,73 @@ function QualityControlForm() {
 
       {/* Form Fields */}
       <div className="space-y-6">
+        {/* Top Row Fields */}
+        <div className="grid grid-cols-12 gap-4 mb-6">
+          {/* Supplier Name - 4 columns */}
+          <div className="col-span-3">
+            <label className="block text-sm font-bold mb-2 text-black">
+              Supplier Name:
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+              placeholder="Short Code"
+            />
+          </div>
+
+          {/* Supplier Lot - 2 columns */}
+          <div className="col-span-2">
+            <label className="block text-sm font-bold mb-2 text-black">
+              Supplier Lot:
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+              placeholder="Lot #"
+            />
+          </div>
+
+          {/* Sample ID - 2 columns */}
+          <div className="col-span-2">
+            <label className="block text-sm font-bold mb-2 text-black">
+              Sample ID:
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+              placeholder="Control #"
+            />
+          </div>
+
+          {/* Refiner - 3 columns */}
+          <div className="col-span-3">
+            <label className="block text-sm font-bold mb-2 text-black">
+              Refiner:
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+              placeholder="Refiner Short Code"
+            />
+          </div>
+
+          {/* Refiner Lot - 1 column */}
+          <div className="col-span-2">
+            <label className="block text-sm font-bold mb-2 text-black">
+              Refiner Lot:
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
+              placeholder="Refiner Lot #"
+            />
+          </div>
+        </div>
+
         {/* Top Section */}
         <div className="grid md:grid-cols-2 gap-6">
           {/* Left Column */}
           <div className="space-y-4">
-            {/* Supplier Name/Lot section */}
-            <div className="grid grid-cols-4 gap-4">
-              <div className="col-span-3">
-                <label className="block text-sm font-bold mb-2 text-black">
-                  Supplier Name:
-                </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
-                  placeholder="Enter short code"
-                />
-              </div>
-              <div className="col-span-1">
-                <label className="block text-sm font-bold mb-2 text-black">
-                  Supplier Lot:
-                </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
-                  placeholder="lot #"
-                />
-              </div>
-            </div>
-
             {/* Type section with consistent height */}
             <div className="relative h-[52px]">
               <label className="block text-sm font-bold mb-2 text-black">
@@ -345,6 +385,35 @@ function QualityControlForm() {
 
           {/* Right Column */}
           <div className="space-y-4">
+            {/* Oven Used Question */}
+            <div className="mb-6">
+              <label className="block text-sm font-bold mb-2 text-black text-center">
+                Was the oven used to dry this sample?
+              </label>
+              <div className="flex justify-center gap-8">
+                <label className="inline-flex items-center text-black">
+                  <input
+                    type="checkbox"
+                    checked={ovenUsed === true}
+                    onChange={() => setOvenUsed(true)}
+                    className="mr-1 appearance-none w-4 h-4 bg-white border border-black checked:bg-black checked:border-black relative
+                    before:content-['✓'] before:absolute before:text-white before:text-xs before:top-0 before:left-0.5 before:opacity-0 checked:before:opacity-100"
+                  />
+                  <span className="ml-2">Yes</span>
+                </label>
+                <label className="inline-flex items-center text-black">
+                  <input
+                    type="checkbox"
+                    checked={ovenUsed === false}
+                    onChange={() => setOvenUsed(false)}
+                    className="mr-1 appearance-none w-4 h-4 bg-white border border-black checked:bg-black checked:border-black relative
+                    before:content-['✓'] before:absolute before:text-white before:text-xs before:top-0 before:left-0.5 before:opacity-0 checked:before:opacity-100"
+                  />
+                  <span className="ml-2">No</span>
+                </label>
+              </div>
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-bold mb-2 text-black">
@@ -427,16 +496,6 @@ function QualityControlForm() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-bold mb-2 text-black">
-                    Sample ID:
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
-                    placeholder="Control Number"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold mb-2 text-black">
                     Supplier Net Weight (lbs):
                   </label>
                   <input
@@ -444,19 +503,7 @@ function QualityControlForm() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
                   />
                 </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-4">
-                <div className="col-span-3">
-                  <label className="block text-sm font-bold mb-2 text-black">
-                    Refiner:
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
-                  />
-                </div>
-                <div className="col-span-1">
+                <div>
                   <label className="block text-sm font-bold mb-2 text-black">
                     Refiner Lot:
                   </label>
@@ -591,12 +638,12 @@ function QualityControlForm() {
           {/* Modified Critical Elements section */}
           <div className="relative">
             <label
-              className="block text-sm font-bold mb-2 text-black hover:text-blue-600 cursor-pointer inline-flex items-center"
+              className="block text-sm font-bold mb-2 text-red-600 hover:text-blue-600 cursor-pointer inline-flex items-center"
               onClick={() => setShowInfoDialog(true)}
             >
-              Critical elements found? (ppm readings will be affected):
+              Critical elements found? (ppm readings may be affected):
               <span className="ml-1 text-blue-600 text-xs">
-                (Click for info)
+                (Click for table)
               </span>
             </label>
 
